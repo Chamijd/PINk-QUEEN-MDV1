@@ -11,31 +11,33 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        const menuCaption = `╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
-┃★╭──────────────
-┃★│ 👑 Owner : *${config.OWNER_NAME}*
-┃★│ 🤖 Baileys : *Multi Device*
-┃★│ 💻 Type : *NodeJs*
-┃★│ 🚀 Platform : *Heroku*
-┃★│ ⚙️ Mode : *[${config.MODE}]*
-┃★│ 🔣 Prefix : *[${config.PREFIX}]*
-┃★│ 🏷️ Version : *1.0.0 Bᴇᴛᴀ*
-┃★╰──────────────
+        const menuCaption =`╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
+┃⏰ *Local Time (LK):* ${timeString}
+┃💬 *Greeting:* ${greeting}
+┃🙋 *User:* ${senderName}
+┃
+┃⚙️ *Bot Info*
+┃├ Owner: *${config.OWNER_NAME}*
+┃├ Baileys: *Multi Device*
+┃├ Type: *NodeJs*
+┃├ Platform: *Heroku*
+┃├ Mode: *[${config.MODE}]*
+┃├ Prefix: *[${config.PREFIX}]*
+┃└ Version: *1.0.0*
 ╰━━━━━━━━━━━━━━━┈⊷
+
 ╭━━〔 *Menu List* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈│1️⃣  📥 *Download Menu*
-┃◈│2️⃣  👥 *Group Menu*
-┃◈│3️⃣  😄 *Fun Menu*
-┃◈│4️⃣  👑 *Owner Menu*
-┃◈│5️⃣  🤖 *AI Menu*
-┃◈│6️⃣  🎎 *Anime Menu*
-┃◈│7️⃣  🔄 *Convert Menu*
-┃◈│8️⃣  📌 *Other Menu*
-┃◈│9️⃣  💞 *Reactions Menu*
-┃◈│🔟  🏠 *Main Menu*
-┃◈╰───────────┈⊷
-╰──────────────┈⊷
+┃1️⃣  📥 *Download Menu*
+┃2️⃣  👥 *Group Menu*
+┃3️⃣  😄 *Fun Menu*
+┃4️⃣  👑 *Owner Menu*
+┃5️⃣  🤖 *AI Menu*
+┃6️⃣  🎎 *Anime Menu*
+┃7️⃣  🔄 *Convert Menu*
+┃8️⃣  📌 *Other Menu*
+┃9️⃣  💞 *Reactions Menu*
+┃🔟  🏠 *Main Menu*
+╰━━━━━━━━━━━━━━━┈⊷
 > ${config.DESCRIPTION}`;
 
         const contextInfo = {
