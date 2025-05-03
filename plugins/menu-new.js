@@ -19,7 +19,7 @@ cmd({
 ┃★│ 🚀 Platform : *Heroku*
 ┃★│ ⚙️ Mode : *[${config.MODE}]*
 ┃★│ 🔣 Prefix : *[${config.PREFIX}]*
-┃★│ 🏷️ Version : *4.0.0 Bᴇᴛᴀ*
+┃★│ 🏷️ Version : *1*
 ┃★╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
 ╭━━〔 *Menu List* 〕━━┈⊷
@@ -43,7 +43,7 @@ cmd({
             forwardingScore: 999,
             isForwarded: true,
             forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363354023106228@newsletter',
+                newsletterJid: '120363419192353625@newsletter',
                 newsletterName: config.OWNER_NAME,
                 serverMessageId: 143
             }
@@ -76,7 +76,7 @@ cmd({
             try {
                 await new Promise(resolve => setTimeout(resolve, 1000)); // Small delay after image
                 await conn.sendMessage(from, {
-                    audio: { url: 'https://github.com/JawadYT36/KHAN-DATA/raw/refs/heads/main/autovoice/menunew.m4a' },
+                    audio: { url: 'https://github.com/rrrrrrrrrr2008/Tt/raw/refs/heads/main/%23dj%20%23remix%20%23funny%20%23comedy%20%23video%20%23viralvideo%20%23love%20%23song%20@knockoutofficial2.mp3' },
                     mimetype: 'audio/mp4',
                     ptt: true,
                 }, { quoted: mek });
