@@ -13,8 +13,6 @@ cmd({
     try {
         const menuCaption = `╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
 ┃★╭──────────────
-┃★│ ⏰ *Local Time (LK):* ${timeString}
-┃★│ 💬 *Greeting:* ${greeting}
 ┃★│ 👑 Owner : *${config.OWNER_NAME}*
 ┃★│ 🤖 Baileys : *Multi Device*
 ┃★│ 💻 Type : *NodeJs*
