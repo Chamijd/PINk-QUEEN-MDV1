@@ -1,0 +1,34 @@
+if (config.AI_CHAT == "true") {
+  // Check if the message is a reply and from the expected sender
+  if (incomingMsg && incomingMsg.quoted && incomingMsg.quoted.sender == expectedSender) {
+    let userQuery = incomingMsg.body?.trim() || "";
+
+    // Validate the query content (e.g., check if it's not a command)
+    if (!isCommand(userQuery)) {
+      try {
+        // Ignore messages starting with "B1E"
+        if (incomingMsg.id && !incomingMsg.id.startsWith("B1E")) {
+          // Call AI API with the user's question
+          const aiResponse = await fetchAIResponse(
+            "https://ai.asitha.top/api/chat?user=" + incomingMsg.sender + "&query=" + encodeURIComponent(userQuery)
+          );
+
+          // Construct response message
+          const messageContent = {
+            text: aiResponse.response
+          };
+
+          // Define message options (e.g., quote original message)
+          const messageOptions = {
+            quoted: originalMsg
+          };
+
+          // Send the AI-generated response
+          await messageClient.sendMessage(chatId, messageContent, messageOptions);
+        }
+      } catch (error) {
+        console.error("AI_CHAT Error:", error);
+      }
+    }
+  }
+}
