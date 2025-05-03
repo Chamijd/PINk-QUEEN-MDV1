@@ -15,39 +15,61 @@ async (conn, mek, m, { from, sender, reply }) => {
     try {
         const now = new Date();
 
-        // Get Sri Lanka time
-        const time = now.toLocaleTimeString("en-US", {
+        // Timezone-specific Sri Lanka time
+        const options = {
+            timeZone: "Asia/Colombo",
+            hour12: true,
             hour: "2-digit",
             minute: "2-digit",
-            second: "2-digit",
-            hour12: true,
-            timeZone: "Asia/Colombo"
-        });
+            second: "2-digit"
+        };
+        const time = now.toLocaleTimeString("en-US", options);
 
-        // Emoji digits + letters map
+        // Emoji mapping
         const emojiMap = {
             "0": "0️⃣", "1": "1️⃣", "2": "2️⃣", "3": "3️⃣",
             "4": "4️⃣", "5": "5️⃣", "6": "6️⃣", "7": "7️⃣",
             "8": "8️⃣", "9": "9️⃣", ":": ":", "A": "🅰️",
             "P": "🅿️", "M": "Ⓜ️", " ": " "
         };
+        const toEmoji = str => str.split("").map(c => emojiMap[c] || c).join("");
 
-        const emojiTime = time.split("").map(c => emojiMap[c] || c).join("");
+        const emojiTime = toEmoji(time);
+        const usedRam = toEmoji((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2));
+        const totalRam = toEmoji((os.totalmem() / 1024 / 1024).toFixed(2));
+
+        // Greeting based on Sri Lanka hour
+        const hour = parseInt(now.toLocaleString("en-US", { hour: "2-digit", hour12: false, timeZone: "Asia/Colombo" }));
+        let greeting = "Hello!";
+        if (hour >= 5 && hour < 12) greeting = "🌞 Good Morning!";
+        else if (hour >= 12 && hour < 17) greeting = "☀️ Good Afternoon!";
+        else if (hour >= 17 && hour < 20) greeting = "🌇 Good Evening!";
+        else greeting = "🌙 Good Night!";
 
         const status = `
-╭───〔 *🤖 ${config.BOT_NAME} STATUS* 〕───◉
-│✨ *Bot is Active & Online!*
-│
-│🧠 *Owner:* ${config.OWNER_NAME}
-│⚡ *Version:* 1.0.0
-│📝 *Prefix:* [${config.PREFIX}]
-│📳 *Mode:* [${config.MODE}]
-│⌚ *Time (LK):* ${emojiTime}
-│💾 *RAM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB
-│🖥️ *Host:* ${os.hostname()}
-│⌛ *Uptime:* ${runtime(process.uptime())}
-╰────────────────────◉
-> ${config.DESCRIPTION}`;
+╭━━〔 *🤖 ${config.BOT_NAME} STATUS* 〕━━╮
+
+╭──〔 ${greeting} 〕──╮
+
+🟢 *BOT STATUS:* Active & Online
+👑 *Owner:* ${config.OWNER_NAME}
+⚙️ *Version:* 1.0.0
+✏️ *Prefix:* [ ${config.PREFIX} ]
+🌐 *Mode:* ${config.MODE === 'public' ? '🌍 Public' : '🔐 Private'}
+
+⏰ *Local Time (LK):* ${emojiTime}
+⏳ *Uptime:* ${runtime(process.uptime())}
+
+💾 *RAM භාවිතය:*
+   ├─ භාවිතවෙමින්: ${usedRam} MB
+   └─ මුළු RAM එක: ${totalRam} MB
+
+🖥️ *Host:* ${os.hostname()}
+
+📝 *Description:* ${config.DESCRIPTION}
+
+╰━━〔 *✨ ALIVE END ✨* 〕━━╯
+`;
 
         await conn.sendMessage(from, {
             image: { url: config.MENU_IMAGE_URL },
@@ -66,6 +88,6 @@ async (conn, mek, m, { from, sender, reply }) => {
 
     } catch (e) {
         console.error("Alive Error:", e);
-        reply(`An error occurred: ${e.message}`);
+        reply(`❌ Error: ${e.message}`);
     }
 });
