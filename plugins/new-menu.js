@@ -11,33 +11,33 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        const menuCaption =`╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
-┃⏰ *Local Time (LK):* ${timeString}
-┃💬 *Greeting:* ${greeting}
-┃🙋 *User:* ${senderName}
-┃
-┃⚙️ *Bot Info*
-┃├ Owner: *${config.OWNER_NAME}*
-┃├ Baileys: *Multi Device*
-┃├ Type: *NodeJs*
-┃├ Platform: *Heroku*
-┃├ Mode: *[${config.MODE}]*
-┃├ Prefix: *[${config.PREFIX}]*
-┃└ Version: *1.0.0*
+        const menuCaption = `╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ ⏰ *Local Time (LK):* ${timeString}
+┃★│ 💬 *Greeting:* ${greeting}
+┃★│ 👑 Owner : *${config.OWNER_NAME}*
+┃★│ 🤖 Baileys : *Multi Device*
+┃★│ 💻 Type : *NodeJs*
+┃★│ 🚀 Platform : *Heroku*
+┃★│ ⚙️ Mode : *[${config.MODE}]*
+┃★│ 🔣 Prefix : *[${config.PREFIX}]*
+┃★│ 🏷️ Version : *4.0.0 Bᴇᴛᴀ*
+┃★╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
-
 ╭━━〔 *Menu List* 〕━━┈⊷
-┃1️⃣  📥 *Download Menu*
-┃2️⃣  👥 *Group Menu*
-┃3️⃣  😄 *Fun Menu*
-┃4️⃣  👑 *Owner Menu*
-┃5️⃣  🤖 *AI Menu*
-┃6️⃣  🎎 *Anime Menu*
-┃7️⃣  🔄 *Convert Menu*
-┃8️⃣  📌 *Other Menu*
-┃9️⃣  💞 *Reactions Menu*
-┃🔟  🏠 *Main Menu*
-╰━━━━━━━━━━━━━━━┈⊷
+┃◈╭─────────────·๏
+┃◈│1️⃣  📥 *Download Menu*
+┃◈│2️⃣  👥 *Group Menu*
+┃◈│3️⃣  😄 *Fun Menu*
+┃◈│4️⃣  👑 *Owner Menu*
+┃◈│5️⃣  🤖 *AI Menu*
+┃◈│6️⃣  🎎 *Anime Menu*
+┃◈│7️⃣  🔄 *Convert Menu*
+┃◈│8️⃣  📌 *Other Menu*
+┃◈│9️⃣  💞 *Reactions Menu*
+┃◈│🔟  🏠 *Main Menu*
+┃◈╰───────────┈⊷
+╰──────────────┈⊷
 > ${config.DESCRIPTION}`;
 
         const contextInfo = {
@@ -45,7 +45,7 @@ cmd({
             forwardingScore: 999,
             isForwarded: true,
             forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363419192353625@newsletter',
+                newsletterJid: '120363354023106228@newsletter',
                 newsletterName: config.OWNER_NAME,
                 serverMessageId: 143
             }
@@ -57,7 +57,7 @@ cmd({
                 return await conn.sendMessage(
                     from,
                     {
-                        image: { url: config.MENU_IMAGE_URL || 'https://i.ibb.co/5XNzHkVp/3908.jpg' },
+                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/7zfdcq.jpg' },
                         caption: menuCaption,
                         contextInfo: contextInfo
                     },
@@ -78,7 +78,7 @@ cmd({
             try {
                 await new Promise(resolve => setTimeout(resolve, 1000)); // Small delay after image
                 await conn.sendMessage(from, {
-                    audio: { url: 'https://github.com/Chamijd/KHAN-DATA/raw/refs/heads/main/autovoice/cm4ozo.mp3' },
+                    audio: { url: 'https://github.com/JawadYT36/KHAN-DATA/raw/refs/heads/main/autovoice/menunew.m4a' },
                     mimetype: 'audio/mp4',
                     ptt: true,
                 }, { quoted: mek });
@@ -145,8 +145,6 @@ cmd({
 ┃★│ • ytmp3 [url]
 ┃★│ • ytmp4 [url]
 ┃★│ • song [name]
-┃★│ • song2
-┃★│ • video3
 ┃★│ • darama [name]
 ┃★╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
@@ -258,15 +256,13 @@ cmd({
 ┃★│ 🖼️ *Image AI*
 ┃★│ • imagine [text]
 ┃★│ • imagine2 [text]
-┃★│ • aiimg
-┃★│ • aiimg2
-┃★│ • aiimg3
-┃★╰─────────────
+┃★╰──────────────
 ┃★╭──────────────
 ┃★│ 🔍 *Specialized*
 ┃★│ • blackbox [query]
 ┃★│ • luma [query]
-┃★│ • dj [query] 
+┃★│ • dj [query]
+┃★│ • khan [query]
 ┃★╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
 > ${config.DESCRIPTION}`,
@@ -345,7 +341,6 @@ cmd({
 ┃★│ 🔍 *Search*
 ┃★│ • define [word]
 ┃★│ • news [query]
-┃★│ • news2
 ┃★│ • movie [name]
 ┃★│ • weather [loc]
 ┃★╰──────────────
@@ -400,6 +395,7 @@ cmd({
 ┃★╭──────────────
 ┃★│ 🛠️ *Controls*
 ┃★│ • menu
+┃★│ • menu2
 ┃★│ • restart
 ┃★╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
