@@ -68,7 +68,7 @@ const {
   //===================SESSION-AUTH============================
 if (!fs.existsSync(__dirname + '/sessions/creds.json')) {
 if(!config.SESSION_ID) return console.log('Please add your session to SESSION_ID env !!')
-const sessdata = config.SESSION_ID.replace("KHAN-MD~", '');
+const sessdata = config.SESSION_ID.replace("CHAMA-MD=", '');
 const filer = File.fromURL(`https://mega.nz/file/${sessdata}`)
 filer.download((err, data) => {
 if(err) throw err
@@ -113,7 +113,7 @@ const port = process.env.PORT || 9090;
   console.log('Plugins installed successful ✅')
   console.log('CHAMA-MD-V1Bot connected to whatsapp ✅')
   
-  let up = `*Hello there CHAMA-MD-V1 User! \ud83d\udc4b\ud83c\udffb* \n\n> Simple , Straight Forward But Loaded With Features \ud83c\udf8a, Meet CHAMA-MD-V1 WhatsApp Bot.\n\n *Thanks for using CHAMA-MD-V1 \ud83d\udea9* \n\n> Join WhatsApp Channel :- ⤵️\n \nhttps://whatsapp.com/channel/0029Vb5OiseHltY10IBkF112\n\n- *YOUR PREFIX:* = ${prefix}\n\nDont forget to give star to repo ⬇️\n\nhttps://github.com/CHMA2009/-CHAMA-MD\n\n> © Powered BY chamindun\n\* owner https://wa.me/message/AY7LYCWKEEWUM1 \ud83d\udda4`;
+  let up = `*Hello there CHAMA-MD-V1 User! \ud83d\udc4b\ud83c\udffb* \n\n> Simple , Straight Forward But Loaded With Features \ud83c\udf8a, Meet CHAMA-MD-V1 WhatsApp Bot.\n\n *Thanks for using CHAMA-MD-V1 \ud83d\udea9* \n\n> Join WhatsApp Channel :- ⤵️\n \nhttps://whatsapp.com/channel/0029Vb5OiseHltY10IBkF112\n\n- *YOUR PREFIX:* = ${prefix}\n\nDont forget to give star to repo ⬇️\n\nhttps://github.com/CHMA2009/-CHAMA-MD\n\n> © Powered BY chamindun\n\> owner https://wa.me/message/AY7LYCWKEEWUM1 \ud83d\udda4`;
     conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/0eo2q4.jpg` }, caption: up })
   }
   })
