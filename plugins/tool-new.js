@@ -241,6 +241,32 @@ async (conn, mek, m, { args, reply }) => {
 });
 
 cmd({
+    pattern: "timenow2",
+    desc: "Check the current local time.",
+    category: "utility",
+    filename: __filename,
+}, 
+async (conn, mek, m, { reply }) => {
+    try {
+        const now = new Date();
+        
+        // Sri Lanka local time
+        const localTime = now.toLocaleTimeString("en-US", { 
+            hour: "2-digit", 
+            minute: "2-digit", 
+            second: "2-digit", 
+            hour12: true,
+            timeZone: "Asia/Colombo" // Sri Lanka timezone
+        });
+        
+        reply(`🕒 ශ්‍රී ලංකාවේ වර්තමාන වේලාව: ${localTime}`);
+    } catch (e) {
+        console.error("Error in .timenow command:", e);
+        reply("❌ දෝෂයක් ඇතිවී ඇත. කරුණාකර පසුව උත්සාහ කරන්න.");
+    }
+});
+
+cmd({
     pattern: "timenow",
     desc: "Check the current local time.",
     category: "utility",
@@ -248,23 +274,29 @@ cmd({
 }, 
 async (conn, mek, m, { reply }) => {
     try {
-        // Get current date and time
         const now = new Date();
-        
-        // Get local time in Pakistan timezone (Asia/Karachi)
+
         const localTime = now.toLocaleTimeString("en-US", { 
             hour: "2-digit", 
             minute: "2-digit", 
             second: "2-digit", 
             hour12: true,
-            timeZone: "Asia/Karachi" // Setting Pakistan's time zone explicitly
+            timeZone: "Asia/Colombo"
         });
-        
-        // Send the local time as reply
-        reply(`🕒 Current Local Time in Pakistan: ${localTime}`);
+
+        // Map regular digits to emoji digits
+        const emojiMap = {
+            "0": "0️⃣", "1": "1️⃣", "2": "2️⃣", "3": "3️⃣",
+            "4": "4️⃣", "5": "5️⃣", "6": "6️⃣", "7": "7️⃣",
+            "8": "8️⃣", "9": "9️⃣", ":": ":", "A": "🅰️", "P": "🅿️", "M": "Ⓜ️"
+        };
+
+        const emojiTime = localTime.split("").map(char => emojiMap[char] || char).join("");
+
+        reply(`🕒 ශ්‍රී ලංකාවේ වර්තමාන වේලාව: ${emojiTime}`);
     } catch (e) {
         console.error("Error in .timenow command:", e);
-        reply("❌ An error occurred. Please try again later.");
+        reply("❌ දෝෂයක් ඇතිවී ඇත. කරුණාකර පසුව උත්සාහ කරන්න.");
     }
 });
 
@@ -276,22 +308,21 @@ cmd({
 }, 
 async (conn, mek, m, { reply }) => {
     try {
-        // Get current date
         const now = new Date();
         
-        // Get the formatted date (e.g., "Monday, January 15, 2025")
+        // Sri Lanka local date
         const currentDate = now.toLocaleDateString("en-US", {
             weekday: "long",
             year: "numeric",
             month: "long",
-            day: "numeric"
+            day: "numeric",
+            timeZone: "Asia/Colombo"
         });
         
-        // Send the current date as reply
-        reply(`📅 Current Date: ${currentDate}`);
+        reply(`📅 අද දිනය: ${currentDate}`);
     } catch (e) {
         console.error("Error in .date command:", e);
-        reply("❌ An error occurred. Please try again later.");
+        reply("❌ දෝෂයක් ඇතිවී ඇත. කරුණාකර පසුව උත්සාහ කරන්න.");
     }
 });
 
