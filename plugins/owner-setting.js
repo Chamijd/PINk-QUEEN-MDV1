@@ -34,7 +34,7 @@ async (conn, mek, m, { from, isOwner, args, reply }) => {
 });
 // 3. Set Profile Picture
 cmd({
-    pattern: "setpp",
+    pattern: "setpp4",
     desc: "Set bot profile picture.",
     category: "owner",
     react: "🖼️",
@@ -49,6 +49,30 @@ async (conn, mek, m, { from, isOwner, quoted, reply }) => {
         reply("🖼️ Profile picture updated successfully!");
     } catch (error) {
         reply(`❌ Error updating profile picture: ${error.message}`);
+    }
+});
+
+
+
+//🥰🥰
+cmd({
+    pattern: "setgpp",
+    desc: "Set group profile picture.",
+    category: "owner",
+    react: "🖼️",
+    filename: __filename
+},
+async (conn, mek, m, { from, isOwner, quoted, reply, isGroup, groupMetadata }) => {
+    if (!isOwner) return reply("❌ You are not the owner!");
+    if (!isGroup) return reply("❌ This command can only be used in groups.");
+    if (!quoted || !quoted.message.imageMessage) return reply("❌ Please reply to an image.");
+
+    try {
+        const media = await conn.downloadMediaMessage(quoted);
+        await conn.updateProfilePicture(from, { url: media });
+        reply("🖼️ Group profile picture updated successfully!");
+    } catch (error) {
+        reply(`❌ Error updating group profile picture: ${error.message}`);
     }
 });
 
@@ -76,16 +100,20 @@ async (conn, mek, m, { from, isOwner, reply }) => {
 // 8. Group JIDs List
 cmd({
     pattern: "gjid",
-    desc: "Get the list of JIDs for all groups the bot is part of.",
+    desc: "Get the list of group names with their JIDs.",
     category: "owner",
     react: "📝",
     filename: __filename
 },
 async (conn, mek, m, { from, isOwner, reply }) => {
     if (!isOwner) return reply("❌ You are not the owner!");
+
     const groups = await conn.groupFetchAllParticipating();
-    const groupJids = Object.keys(groups).join('\n');
-    reply(`📝 *Group JIDs:*\n\n${groupJids}`);
+    const groupList = Object.values(groups).map(group => {
+        return `*${group.subject}*\n${group.id}`;
+    }).join('\n\n');
+
+    reply(`📝 *Group List:*\n\n${groupList}`);
 });
 
 
