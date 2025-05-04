@@ -35,10 +35,11 @@ cmd({
 
         // Menu caption with dynamic info
         const menuCaption = `╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
+┃🙋 *User:* ${senderName}
 ┃⏰ *Local Time (LK):* ${timeString}
 ┃💬 *Greeting:* ${greeting}
-┃🙋 *User:* ${senderName}
-┃
+╰━━━━━━━━━━━━━━━┈⊷
+╭━━━━━━━━━━━━━━━━┈⊷
 ┃⚙️ *Bot Info*
 ┃├ Owner: *${config.OWNER_NAME}*
 ┃├ Baileys: *Multi Device*
@@ -82,7 +83,7 @@ cmd({
                 return await conn.sendMessage(
                     from,
                     {
-                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/7zfdcq.jpg' },
+                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/ww4val.jpg' },
                         caption: menuCaption,
                         contextInfo: contextInfo
                     },
