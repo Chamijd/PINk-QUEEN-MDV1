@@ -11,14 +11,25 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // Get time, greeting, and sender info
-        const time = new Date();
-        const hours = time.getHours();
-        let timeString = `${time.getHours()}:${time.getMinutes()}`;
-        
-        let greeting = "Good Evening";
-        if (hours < 12) greeting = "Good Morning";
-        else if (hours < 18) greeting = "Good Afternoon";
+        // Get Sri Lanka time
+        const date = new Date();
+        const timeString = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Asia/Colombo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        }).format(date);
+
+        // Greeting in Sinhala based on Sri Lanka time
+        const hourNumber = parseInt(new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Asia/Colombo',
+            hour: '2-digit',
+            hour12: false
+        }).format(date));
+
+        let greeting = "සුභ සැන්දෑවක්!";
+        if (hourNumber < 12) greeting = "සුභ උදෑසනක්!";
+        else if (hourNumber < 18) greeting = "සුභ පස්වරුෙවක්!";
 
         const senderName = m.pushName || "User";
 
@@ -50,7 +61,9 @@ cmd({
 ┃9️⃣  💞 *Reactions Menu*
 ┃🔟  🏠 *Main Menu*
 ╰━━━━━━━━━━━━━━━┈⊷
+
 > ${config.DESCRIPTION}`;
+
 
         const contextInfo = {
             mentionedJid: [m.sender],
