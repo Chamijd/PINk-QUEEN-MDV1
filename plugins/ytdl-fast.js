@@ -104,38 +104,37 @@ cmd({
 });
 
 //sndsong
-cmd({ 
-    pattern: "sndsong", 
-    react: "🎵", 
-    desc: "Auto-send a random song", 
-    category: "main", 
-    filename: __filename 
-}, async (conn, mek, m, { from, reply }) => { 
+cmd({
+    pattern: "sndsong",
+    react: "🎵",
+    desc: "Auto-send Sinhala song without search",
+    category: "main",
+    filename: __filename
+}, async (conn, mek, m, { from, reply }) => {
     try {
-        const songs = [
-            "Senorita Shawn Mendes",
-            "Shape of You Ed Sheeran",
-            "Believer Imagine Dragons",
-            "Kesariya",
-            "Aluthmath Wishwasayak",
-            "Stay - Justin Bieber",
-            "Dandelions",
-            "Perfect - Ed Sheeran",
-            "Despacito",
-            "Satisfya"
+        const sinhalaSearchKeywords = [
+            "Sinhala new song",
+            "Sinhala love song",
+            "Top sinhala songs",
+            "Sanuka Wickramasinghe songs",
+            "Kasun Kalhara hit songs",
+            "Sri Lankan trending songs",
+            "Sinhala music 2024",
+            "BnS sinhala hits",
+            "Umariya songs",
+            "Sinhala romantic songs"
         ];
 
-        const randomSong = songs[Math.floor(Math.random() * songs.length)];
+        const randomKeyword = sinhalaSearchKeywords[Math.floor(Math.random() * sinhalaSearchKeywords.length)];
+        const yt = await ytsearch(randomKeyword);
+        if (!yt.results.length) return reply("❌ No Sinhala song found right now.");
 
-        const yt = await ytsearch(randomSong);
-        if (!yt.results.length) return reply(`❌ No result found for: ${randomSong}`);
-
-        const song = yt.results[0];
+        const song = yt.results[Math.floor(Math.random() * yt.results.length)];
         const apiUrl = `https://apis.davidcyriltech.my.id/youtube/mp3?url=${encodeURIComponent(song.url)}`;
         const res = await fetch(apiUrl);
         const data = await res.json();
 
-        if (!data?.result?.downloadUrl) return reply(`⚠️ Failed to download: ${song.title}`);
+        if (!data?.result?.downloadUrl) return reply("❌ MP3 download failed.");
 
         await conn.sendMessage(from, {
             audio: { url: data.result.downloadUrl },
@@ -143,8 +142,8 @@ cmd({
             fileName: `${song.title}.mp3`,
             contextInfo: {
                 externalAdReply: {
-                    title: song.title.length > 25 ? `${song.title.substring(0, 22)}...` : song.title,
-                    body: "Auto Song Delivery",
+                    title: song.title.length > 25 ? `${song.title.slice(0, 22)}...` : song.title,
+                    body: "Auto Sinhala Song",
                     mediaType: 1,
                     thumbnailUrl: song.thumbnail.replace('default.jpg', 'hqdefault.jpg'),
                     sourceUrl: song.url,
@@ -155,8 +154,7 @@ cmd({
         }, { quoted: mek });
 
     } catch (error) {
-        console.error("Auto Song Error:", error);
-        reply("❌ Error occurred while sending song. Try again.");
+        console.error("Auto Sinhala Song Error:", error);
+        reply("⚠️ Error occurred. Try again later.");
     }
 });
-
