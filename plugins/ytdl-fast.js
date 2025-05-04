@@ -102,3 +102,61 @@ cmd({
         reply("An error occurred. Please try again.");
     }
 });
+
+//sndsong
+cmd({ 
+    pattern: "sndsong", 
+    react: "🎵", 
+    desc: "Auto-send a random song", 
+    category: "main", 
+    filename: __filename 
+}, async (conn, mek, m, { from, reply }) => { 
+    try {
+        const songs = [
+            "Senorita Shawn Mendes",
+            "Shape of You Ed Sheeran",
+            "Believer Imagine Dragons",
+            "Kesariya",
+            "Aluthmath Wishwasayak",
+            "Stay - Justin Bieber",
+            "Dandelions",
+            "Perfect - Ed Sheeran",
+            "Despacito",
+            "Satisfya"
+        ];
+
+        const randomSong = songs[Math.floor(Math.random() * songs.length)];
+
+        const yt = await ytsearch(randomSong);
+        if (!yt.results.length) return reply(`❌ No result found for: ${randomSong}`);
+
+        const song = yt.results[0];
+        const apiUrl = `https://apis.davidcyriltech.my.id/youtube/mp3?url=${encodeURIComponent(song.url)}`;
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        if (!data?.result?.downloadUrl) return reply(`⚠️ Failed to download: ${song.title}`);
+
+        await conn.sendMessage(from, {
+            audio: { url: data.result.downloadUrl },
+            mimetype: "audio/mpeg",
+            fileName: `${song.title}.mp3`,
+            contextInfo: {
+                externalAdReply: {
+                    title: song.title.length > 25 ? `${song.title.substring(0, 22)}...` : song.title,
+                    body: "Auto Song Delivery",
+                    mediaType: 1,
+                    thumbnailUrl: song.thumbnail.replace('default.jpg', 'hqdefault.jpg'),
+                    sourceUrl: song.url,
+                    showAdAttribution: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: mek });
+
+    } catch (error) {
+        console.error("Auto Song Error:", error);
+        reply("❌ Error occurred while sending song. Try again.");
+    }
+});
+
