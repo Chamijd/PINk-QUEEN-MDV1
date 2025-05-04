@@ -2,28 +2,42 @@ const { cmd } = require('../command');
 
 cmd({
     pattern: "jid",
-    alias: ["id", "chatid", "gjid"],  
-    desc: "Get full JID of current chat/user (Creator Only)",
+    alias: ["id", "chatid", "gjid"],
+    desc: "Get full JID of current chat/user/channel (Creator Only)",
     react: "🆔",
     category: "utility",
     filename: __filename,
-}, async (conn, mek, m, { 
-    from, isGroup, isCreator, reply, sender 
+}, async (conn, mek, m, {
+    from, isGroup, isCreator, reply, sender
 }) => {
     try {
         if (!isCreator) {
             return reply("❌ *Command Restricted* - Only my creator can use this.");
         }
 
-        if (isGroup) {
-            // Ensure group JID ends with @g.us
-            const groupJID = from.includes('@g.us') ? from : `${from}@g.us`;
-            return reply(`👥 *Group JID:*\n\`\`\`${groupJID}\`\`\``);
-        } else {
-            // Ensure user JID ends with @s.whatsapp.net
-            const userJID = sender.includes('@s.whatsapp.net') ? sender : `${sender}@s.whatsapp.net`;
-            return reply(`👤 *User JID:*\n\`\`\`${userJID}\`\`\``);
+        let type = "❓ Unknown";
+        let jid = from;
+        let id = jid.split('@')[0];
+
+        if (from.endsWith('@g.us')) {
+            type = "👥 Group";
+        } else if (from.endsWith('@s.whatsapp.net')) {
+            type = "👤 Private Chat";
+            jid = sender;
+            id = jid.split('@')[0];
+        } else if (from.endsWith('@broadcast')) {
+            type = "📢 Broadcast List";
+        } else if (from.endsWith('@newsletter')) {
+            type = "📣 Channel";
         }
+
+        const message = `╭───〔 *CHAT INFO* 〕───
+│ 🆔 *ID:* ${id}
+│ 🗂️ *Type:* ${type}
+│ 🔗 *JID:* \`\`\`${jid}\`\`\`
+╰──────────────────────`;
+
+        reply(message);
 
     } catch (e) {
         console.error("JID Error:", e);
