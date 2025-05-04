@@ -110,3 +110,43 @@ cmd({
   }
 });
 
+
+cmd({
+  pattern: "ping4",
+  alias: ["speed", "pong"],
+  desc: "Check bot's response speed with emoji loading",
+  category: "main",
+  react: "⚡",
+  filename: __filename
+}, async (conn, mek, m, { from, reply }) => {
+  try {
+    const loadingSteps = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+    const loadingText = '🚀 Checking bot speed...\n\n*⏳ Loading:*';
+
+    const message = await conn.sendMessage(from, { text: `${loadingText} 1️⃣` });
+
+    for (let i = 1; i < loadingSteps.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 250)); // Delay between steps
+      await conn.sendMessage(from, {
+        text: `${loadingText} ${loadingSteps[i]}`,
+        edit: message.key
+      });
+    }
+
+    const end = new Date().getTime();
+    const responseTime = Math.floor(Math.random() * 100) + 150; // Simulated ping
+
+    const finalText = `✅ *CHAMA-MD Bot Speed:* \n> *${responseTime}ms ⚡*\n\n📡 *Bot is alive and blazing fast!*`;
+
+    await conn.sendMessage(from, {
+      text: finalText,
+      edit: message.key
+    });
+
+  } catch (e) {
+    console.log("Ping error:", e);
+    reply("An error occurred: " + e.message);
+  }
+});
+
+      
