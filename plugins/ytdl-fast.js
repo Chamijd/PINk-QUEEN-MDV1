@@ -158,3 +158,79 @@ cmd({
         reply("⚠️ Error occurred. Try again later.");
     }
 });
+
+
+//😓😓😓
+let autoSongInterval = null;
+
+cmd({
+    pattern: "sndsong",
+    react: "🎧",
+    desc: "Start auto-sending Sinhala songs",
+    category: "main",
+    filename: __filename
+}, async (conn, mek, m, { from, reply }) => {
+    try {
+        if (autoSongInterval) return reply("⛔ Already running. Use `.stopsong` to stop.");
+
+        const sinhalaKeywords = [
+            "Sanuka Wickramasinghe", "Kasun Kalhara", "BnS sinhala songs", 
+            "Umariya sinhala", "Top Sinhala love songs", "New sinhala music"
+        ];
+
+        const sendRandomSong = async () => {
+            try {
+                const keyword = sinhalaKeywords[Math.floor(Math.random() * sinhalaKeywords.length)];
+                const yt = await ytsearch(keyword);
+                const song = yt.results[Math.floor(Math.random() * yt.results.length)];
+                const api = `https://apis.davidcyriltech.my.id/youtube/mp3?url=${encodeURIComponent(song.url)}`;
+                const res = await fetch(api);
+                const data = await res.json();
+                if (!data?.result?.downloadUrl) return;
+
+                await conn.sendMessage(from, {
+                    audio: { url: data.result.downloadUrl },
+                    mimetype: "audio/mpeg",
+                    fileName: `${song.title}.mp3`,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: song.title.length > 25 ? `${song.title.slice(0, 22)}...` : song.title,
+                            body: "Auto Sinhala Song",
+                            mediaType: 1,
+                            thumbnailUrl: song.thumbnail.replace('default.jpg', 'hqdefault.jpg'),
+                            sourceUrl: song.url,
+                            showAdAttribution: true,
+                            renderLargerThumbnail: true
+                        }
+                    }
+                }, { quoted: mek });
+            } catch (err) {
+                console.error("Song error:", err);
+            }
+        };
+
+        autoSongInterval = setInterval(sendRandomSong, 10 * 60 * 1000); // every 10 min
+        sendRandomSong(); // send first immediately
+        reply("✅ Auto Sinhala songs started! Use `.stopsong` to stop.");
+
+    } catch (err) {
+        console.error("sndsong error:", err);
+        reply("❌ Error starting auto songs.");
+    }
+});
+
+cmd({
+    pattern: "stopsong",
+    react: "⛔",
+    desc: "Stop auto Sinhala songs",
+    category: "main",
+    filename: __filename
+}, async (conn, mek, m, { reply }) => {
+    if (autoSongInterval) {
+        clearInterval(autoSongInterval);
+        autoSongInterval = null;
+        return reply("✅ Auto Sinhala songs stopped.");
+    } else {
+        return reply("❌ Auto songs not running.");
+    }
+});
