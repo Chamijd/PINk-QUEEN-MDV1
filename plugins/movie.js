@@ -291,4 +291,4 @@ await conn.sendMessage(from, { react: { text: "✅", key: msg1.key } });
 });
 
 
-මේක customize කරලා දාමු
+
