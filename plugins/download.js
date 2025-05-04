@@ -230,48 +230,53 @@ cmd({
   reply
 }) => {
   try {
-    if (!q) {
-      return reply("❌ Please provide an app name to search.");
-    }
+    if (!q) return reply("❌ Please provide an app name to search.");
 
     await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
 
-    const apiUrl = `http://ws75.aptoide.com/api/7/apps/search/query=${q}/limit=1`;
+    const apiUrl = `http://ws75.aptoide.com/api/7/apps/search/query=${encodeURIComponent(q)}/limit=1`;
     const response = await axios.get(apiUrl);
     const data = response.data;
 
-    if (!data || !data.datalist || !data.datalist.list.length) {
+    if (!data?.datalist?.list?.length) {
       return reply("⚠️ No results found for the given app name.");
     }
 
     const app = data.datalist.list[0];
     const appSize = (app.size / 1048576).toFixed(2); // Convert bytes to MB
 
-    const caption = `╭━━━〔 *APK Downloader* 〕━━━┈⊷
-┃ 📦 *Name:* ${app.name}
-┃ 🏋 *Size:* ${appSize} MB
-┃ 📦 *Package:* ${app.package}
-┃ 📅 *Updated On:* ${app.updated}
-┃ 👨‍💻 *Developer:* ${app.developer.name}
-╰━━━━━━━━━━━━━━━┈⊷
-🔗 *Powered By KhanX-AI*`;
+    const caption = `*╭━━━〔 APK Downloader 〕━━━╮*
+*┃ 📦 Name:* ${app.name}
+*┃ 🏋 Size:* ${appSize} MB
+*┃ 📦 Package:* ${app.package}
+*┃ 📅 Updated:* ${app.updated}
+*┃ 👨‍💻 Developer:* ${app.developer.name}
+*╰━━━━━━━━━━━━━━━━━━━━╯*
+🔗 *Powered By Chamindu*`;
 
-    await conn.sendMessage(from, { react: { text: "⬆️", key: m.key } });
+    await conn.sendMessage(from, { react: { text: "⬇️", key: m.key } });
 
+    // Send app icon with details
+    await conn.sendMessage(from, {
+      image: { url: app.icon },
+      caption: caption
+    }, { quoted: m });
+
+    // Send the APK file
     await conn.sendMessage(from, {
       document: { url: app.file.path_alt },
       fileName: `${app.name}.apk`,
-      mimetype: "application/vnd.android.package-archive",
-      caption: caption
+      mimetype: "application/vnd.android.package-archive"
     }, { quoted: m });
 
     await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
 
   } catch (error) {
-    console.error("Error:", error);
+    console.error("APK Command Error:", error);
     reply("❌ An error occurred while fetching the APK. Please try again.");
   }
 });
+
 
 // G-Drive-DL
 
@@ -305,7 +310,7 @@ cmd({
         document: { url: downloadUrl },
         mimetype: response.data.result.mimetype,
         fileName: response.data.result.fileName,
-        caption: "*© Powered By JawadTechX*"
+        caption: "*© Powered By chamindu*"
       }, { quoted: m });
 
       await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
